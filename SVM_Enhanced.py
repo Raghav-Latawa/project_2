@@ -12,23 +12,22 @@ import pylab as pl
 nltk.download()
 def preprocess(tweet):
 
-    # Convert www.* or https?://* to URL
+ 
     tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))' ,'URL' ,tweet)
 
-    # Convert @username to __USERHANDLE
     tweet = re.sub('@[^\s]+' ,'__USERHANDLE' ,tweet)
 
-    # Replace #word with word
+   
     tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
 
-    # trim
+
     tweet = tweet.strip('\'"')
 
-    # Repeating words like hellloooo
+
     repeat_char = re.compile(r"(.)\1{1,}", re.IGNORECASE)
     tweet = repeat_char.sub(r"\1\1", tweet)
 
-    # Emoticons
+ 
     emoticons = \
         [
             ('__positive__' ,[ ':-)', ':)', '(:', '(-:', \
@@ -80,14 +79,7 @@ trainNewData = trainNewData['text']
 
 trainNewData = [stem(preprocess(tweet)) for tweet in trainNewData]
 
-# X_train_vec_new = vec.transform(trainNewData)
 
-###########################################################
-
-# dataset = pd.read_csv('https://grubhub-bucket.s3.us-east-2.amazonaws.com/training.1600000.processed.noemoticon.csv', skiprows=750000, nrows=100000, encoding='ISO-8859-1' ,header=None)
-# X= dataset.iloc[:, 5].values
-# X = pd.Series(X)
-# y = dataset.iloc[:, 0].values
 '''
 for row in range(0,1600000):
     if y[row]==4:
@@ -96,35 +88,28 @@ for row in range(0,1600000):
         y[row]=0
 '''
 
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=5)
-#
-# X_train = [stem(preprocess(tweet)) for tweet in X_train]
-# X_test = [stem(preprocess(tweet)) for tweet in X_test]
 
 vec = TfidfVectorizer(min_df=5, max_df=0.95, sublinear_tf=True, use_idf=True, ngram_range=(1, 2))
-# X_train_vec = vec.fit_transform(X_train)
-# X_test_vec = vec.transform(X_test)
+
 X_train_vec_new = vec.fit_transform(trainNewData)
-# nb = MultinomialNB()
+
 
 from sklearn.svm import SVC
 
 svclassifier = SVC(kernel='linear')
 svclassifier.fit(X_train_vec_new, y_train)
 
-# import pickle
-#
-# pickle.dump(svclassifier, open("SVMModel", 'wb'))
+
 
 import pickle
 
 svmLoaded = pickle.load(open('SVMModel', 'rb'))
 
 testData = pd.read_csv('test_labelled.csv')
-# testData = testData[pd.notnull(testData['sentiment'])]
+
 print(testData.shape[0])
 del testData['location']
-# testData = testData.dropna()
+
 testData = testData[pd.notnull(testData['sentiment'])]
 print(testData.shape[0])
 
