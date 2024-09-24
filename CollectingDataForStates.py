@@ -11,9 +11,7 @@ candidates = ["Bernie Sanders", "Elizabeth Warren", "Kamala Harris", "Joe Biden"
 import subprocess
 import os
 save_path="/home/kapil/PycharmProjects/Political-Opinion-Mining/Candidate_Tweets_per_State/"
-# twitterscraper "Bernie Sanders near:California" -bd 2019-09-23 -ed 2019-11-23 -o Bernie_California.json
-# os.system("twitterscraper trump -bd 2019-09-23 -ed 2019-11-23 -l 10 -o "+save_path+"Bernie_California.json")
-# subprocess.run(["ls", "-l"])
+
 for candidate in candidates:
   for word in states:
     query = 'twitterscraper "'+candidate+' near:' + word + '" -bd 2019-09-23 -ed 2019-11-23 -o '+save_path+candidate.replace(" ","")+'_' +word+ '.json'
