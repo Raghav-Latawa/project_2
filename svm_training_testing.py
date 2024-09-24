@@ -13,23 +13,22 @@ import pylab as pl
 nltk.download()
 def preprocess(tweet):
     
-    #Convert www.* or https?://* to URL
+  
     tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))','URL',tweet)
     
-    #Convert @username to __USERHANDLE
+  
     tweet = re.sub('@[^\s]+','__USERHANDLE',tweet)  
     
-    #Replace #word with word
     tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
     
-    #trim
+  
     tweet = tweet.strip('\'"')
     
-    # Repeating words like hellloooo
+
     repeat_char = re.compile(r"(.)\1{1,}", re.IGNORECASE)
     tweet = repeat_char.sub(r"\1\1", tweet)
     
-    #Emoticons
+  
     emoticons = \
     [
      ('__positive__',[ ':-)', ':)', '(:', '(-:', \
@@ -51,12 +50,11 @@ def preprocess(tweet):
     for (repl, regx) in emoticons_regex :
         tweet = re.sub(regx, ' '+repl+' ', tweet)
 
-     #Convert to lower case
+  
     tweet = tweet.lower()
     
     return tweet
 
-#Stemming of Tweets
 
 def stem(tweet):
         stemmer = nltk.stem.PorterStemmer()
