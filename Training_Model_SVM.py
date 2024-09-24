@@ -15,23 +15,22 @@ from nltk.stem import WordNetLemmatizer
 
 
 def preprocess(tweet):
-    # Convert www.* or https?://* to URL
+
     tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', tweet)
 
-    # Convert @username to __USERHANDLE
+
     tweet = re.sub('@[^\s]+', '__USERHANDLE', tweet)
 
-    # Replace #word with word
+    
     tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
 
-    # trim
+
     tweet = tweet.strip('\'"')
 
-    # Repeating words like hellloooo
     repeat_char = re.compile(r"(.)\1{1,}", re.IGNORECASE)
     tweet = repeat_char.sub(r"\1\1", tweet)
 
-    # Emoticons
+  
     emoticons = [
         ('__positive__', [':-)', ':)', '(:', '(-:', \
                           ':-D', ':D', 'X-D', 'XD', 'xD', \
@@ -51,12 +50,10 @@ def preprocess(tweet):
     for (repl, regx) in emoticons_regex:
         tweet = re.sub(regx, ' ' + repl + ' ', tweet)
 
-    # Convert to lower case
     tweet = tweet.lower()
 
     return tweet
 
-# Lemmatization of Tweets
 def lemma(tweet):
     wordnet_lemmatizer = WordNetLemmatizer()
     punctuations="?:!.,;"
@@ -68,7 +65,7 @@ def lemma(tweet):
         else:
             sentence_words_lemma.append(wordnet_lemmatizer.lemmatize(word,pos="v"))
     return ' '.join(sentence_words_lemma)
-# Stemming of Tweets
+
 
 def stem(tweet):
     stemmer = nltk.stem.PorterStemmer()
@@ -93,7 +90,6 @@ for row in range(0,1600000):
         y[row]=0
 '''
 
-# In[7]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=5)
