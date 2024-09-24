@@ -19,16 +19,11 @@ for name in candidates.keys():
         pos = round((dictionary[4]/total_len) * 100, 2)
         neg = round((dictionary[0]/total_len) * 100, 2)
 
-        # For topic wise candidate sentiment
+    
         row = {'Name': candidates[name], 'Topic': topics[topic], 'POS': dictionary[4], 'NEG': dictionary[0],
                'Total': total_len, 'POS%': pos, 'NEG%': neg}
-        # print(row)
+     
         rows.append(row)
 
 df = pd.DataFrame(rows)
 print(df)
-# df.to_csv('topicwise_sentiment.csv')
-# df.to_csv('overall_sentiment for candidates.csv')
-# df.to_csv('locations_sentiment.csv')
-
-# df_max.to_csv('most_tweeted_candidate_location.csv')
