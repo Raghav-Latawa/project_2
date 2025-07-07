@@ -67,6 +67,8 @@ def lemma(tweet):
     return ' '.join(sentence_words_lemma)
 
 
+
+
 def stem(tweet):
     stemmer = nltk.stem.PorterStemmer()
     tweet_stem = ''
